@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.skooldio.android.fundamentals.workshop.pomodoro.config.PomodoroConfig
+import com.skooldio.android.fundamentals.workshop.pomodoro.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     // Requester for permission requesting
@@ -34,12 +35,16 @@ class MainActivity : AppCompatActivity() {
         private const val LONG_BREAK_DURATION_MAX = PomodoroConfig.LONG_BREAK_DURATION_MAX
     }
 
+    private val binding: ActivityMainBinding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Additional code to support edge-to-edge in Android 15
         // Leave this code above the setContentView method
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
         // Additional code to support edge-to-edge in Android 15
         // Leave this code below the setContentView method
