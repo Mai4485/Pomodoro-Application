@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.skooldio.android.fundamentals.workshop.pomodoro.config.PomodoroConfig
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +36,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Additional code to support edge-to-edge in Android 15
+        // Leave this code above the setContentView method
+        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        // Additional code to support edge-to-edge in Android 15
+        // Leave this code below the setContentView method
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         // Additional code to support new permission in Android 13
         // Leave this code on the last line of the method
