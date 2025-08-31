@@ -39,12 +39,17 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
+    private var workDuration = WORK_DURATION_DEFAULT
+    private var shortBreakDuration = SHORT_BREAK_DURATION_DEFAULT
+    private var longBreakDuration = LONG_BREAK_DURATION_DEFAULT
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Additional code to support edge-to-edge in Android 15
         // Leave this code above the setContentView method
         enableEdgeToEdge()
         setContentView(binding.root)
+        setupView()
 
         // Additional code to support edge-to-edge in Android 15
         // Leave this code below the setContentView method
@@ -73,5 +78,60 @@ class MainActivity : AppCompatActivity() {
         if (isPermissionDenied) {
             requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
+    }
+
+    private fun setupView() {
+        updateWorkDuration()
+        updateShortBreakDuration()
+        updateLongBreakDuration()
+
+        binding.buttonAddWorkDuration.setOnClickListener {
+            workDuration += 5
+            workDuration = workDuration.coerceIn(WORK_DURATION_MIN, WORK_DURATION_MAX)
+            updateWorkDuration()
+        }
+        binding.buttonReduceWorkDuration.setOnClickListener {
+            workDuration -= 5
+            workDuration = workDuration.coerceIn(WORK_DURATION_MIN, WORK_DURATION_MAX)
+            updateWorkDuration()
+        }
+
+        binding.buttonAddShortBreakDuration.setOnClickListener {
+            shortBreakDuration += 5
+            shortBreakDuration = shortBreakDuration.coerceIn(SHORT_BREAK_DURATION_MIN, SHORT_BREAK_DURATION_MAX)
+            updateShortBreakDuration()
+        }
+        binding.buttonReduceShortBreakDuration.setOnClickListener {
+            shortBreakDuration -= 5
+            shortBreakDuration = shortBreakDuration.coerceIn(SHORT_BREAK_DURATION_MIN, SHORT_BREAK_DURATION_MAX)
+            updateShortBreakDuration()
+        }
+
+        binding.buttonAddLongBreakDuration.setOnClickListener {
+            longBreakDuration += 5
+            longBreakDuration = longBreakDuration.coerceIn(LONG_BREAK_DURATION_MIN, LONG_BREAK_DURATION_MAX)
+            updateLongBreakDuration()
+        }
+        binding.buttonReduceLongBreakDuration.setOnClickListener {
+            longBreakDuration -= 5
+            longBreakDuration = longBreakDuration.coerceIn(LONG_BREAK_DURATION_MIN, LONG_BREAK_DURATION_MAX)
+            updateLongBreakDuration()
+        }
+
+        binding.buttonReady.setOnClickListener {
+
+        }
+    }
+
+    private fun updateWorkDuration() {
+        binding.textViewWorkDuration.text = getString(R.string.duration_value, workDuration)
+    }
+
+    private fun updateShortBreakDuration() {
+        binding.textViewShortDuration.text = getString(R.string.duration_value, shortBreakDuration)
+    }
+
+    private fun updateLongBreakDuration() {
+        binding.textViewLongDuration.text = getString(R.string.duration_value, longBreakDuration)
     }
 }
