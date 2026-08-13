@@ -109,28 +109,40 @@ class MainActivity : AppCompatActivity() {
 
         binding.buttonAddShortBreakDuration.setOnClickListener {
             shortBreakDuration += 5
-            shortBreakDuration = shortBreakDuration.coerceIn(SHORT_BREAK_DURATION_MIN, SHORT_BREAK_DURATION_MAX)
+            shortBreakDuration =
+                shortBreakDuration.coerceIn(SHORT_BREAK_DURATION_MIN, SHORT_BREAK_DURATION_MAX)
             updateShortBreakDuration()
         }
         binding.buttonReduceShortBreakDuration.setOnClickListener {
             shortBreakDuration -= 5
-            shortBreakDuration = shortBreakDuration.coerceIn(SHORT_BREAK_DURATION_MIN, SHORT_BREAK_DURATION_MAX)
+            shortBreakDuration =
+                shortBreakDuration.coerceIn(SHORT_BREAK_DURATION_MIN, SHORT_BREAK_DURATION_MAX)
             updateShortBreakDuration()
         }
 
         binding.buttonAddLongBreakDuration.setOnClickListener {
             longBreakDuration += 5
-            longBreakDuration = longBreakDuration.coerceIn(LONG_BREAK_DURATION_MIN, LONG_BREAK_DURATION_MAX)
+            longBreakDuration =
+                longBreakDuration.coerceIn(LONG_BREAK_DURATION_MIN, LONG_BREAK_DURATION_MAX)
             updateLongBreakDuration()
         }
         binding.buttonReduceLongBreakDuration.setOnClickListener {
             longBreakDuration -= 5
-            longBreakDuration = longBreakDuration.coerceIn(LONG_BREAK_DURATION_MIN, LONG_BREAK_DURATION_MAX)
+            longBreakDuration =
+                longBreakDuration.coerceIn(LONG_BREAK_DURATION_MIN, LONG_BREAK_DURATION_MAX)
             updateLongBreakDuration()
         }
 
         binding.buttonReady.setOnClickListener {
-            val intent = Intent(this, TimerActivity::class.java)
+            val config = Config(
+                workDuration = workDuration,
+                shortBreakDuration = shortBreakDuration,
+                longBreakDuration = longBreakDuration
+            )
+            val intent = TimerActivity.newIntent(
+                context = this,
+                config = config
+            )
             startActivity(intent)
         }
     }
