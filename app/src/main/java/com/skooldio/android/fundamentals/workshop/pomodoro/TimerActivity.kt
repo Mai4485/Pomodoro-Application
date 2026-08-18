@@ -102,10 +102,18 @@ class TimerActivity : AppCompatActivity() {
                     longBreakDuration = it.longBreakDuration
                 )
                 setListener(
-                    onReady = { minute, second -> },
-                    onWork = { minute, second -> },
-                    onShortBreak = { minute, second -> },
-                    onLongBreak = { minute, second -> }
+                    onReady = { minute, second ->
+                        updateCounterStatus(State.Ready, minute, second)
+                    },
+                    onWork = { minute, second ->
+                        updateCounterStatus(State.Work, minute, second)
+                    },
+                    onShortBreak = { minute, second ->
+                        updateCounterStatus(State.ShortBreak, minute, second)
+                    },
+                    onLongBreak = { minute, second ->
+                        updateCounterStatus(State.LongBreak, minute, second)
+                    }
                 )
             }
         }
@@ -133,5 +141,49 @@ class TimerActivity : AppCompatActivity() {
 
         val manager = NotificationManagerCompat.from(this)
         manager.notify(1, notification)
+    }
+
+    sealed class State {
+        object Ready: State()
+        object Work: State()
+        object ShortBreak: State()
+        object LongBreak: State()
+    }
+
+    private fun updateCounterStatus(state: State, minute: Int, second: Int) {
+        binding.textViewState.setText(getStateTextResourceId(state))
+        binding.textViewMinute.text = getString(R.string.time_value, minute)
+        binding.textViewSecond.text = getString(R.string.time_value, second)
+
+        if (minute == 0 && second == 0){
+            onPomodoroCounterFinished(state)
+        }
+    }
+
+    private fun onPomodoroCounterFinished(state: State) {
+        when(state){
+            State.Ready -> {}
+            State.Work -> showNotification(
+                title = getString(R.string.notification_time_up_title),
+                text = getString(R.string.notification_time_up_text_work)
+            )
+            State.ShortBreak -> showNotification(
+                title = getString(R.string.notification_time_up_title),
+                text = getString(R.string.notification_time_up_text_short_break)
+            )
+            State.LongBreak -> showNotification(
+                title = getString(R.string.notification_time_up_title),
+                text = getString(R.string.notification_time_up_text_long_break)
+            )
+        }
+    }
+
+    private fun getStateTextResourceId(state: State): Int {
+        return when(state) {
+            State.Ready -> R.string.ready
+            State.Work -> R.string.state_work
+            State.ShortBreak -> R.string.state_short_break
+            State.LongBreak -> R.string.state_long_break
+        }
     }
 }
